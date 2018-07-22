@@ -2,13 +2,17 @@ require 'rails_helper'
 
 RSpec.describe "Apis", type: :request do
   describe "GET /api/activities" do
+    activity_number = 4
+    let!(:activities){FactoryBot.create_list(:activity,activity_number)}
+    before {get api_activities_path}
+
     it "returns status code 200" do
-      get api_activities_path
       expect(response).to have_http_status(200)
     end
 
-    xit "returns a list of activities with id, name and description" do
-
+    it "returns a list of activities with id, name and description" do
+      expect(json).not_to be_empty
+      expect(json.size).to eq(activity_number)
     end
   end
 
