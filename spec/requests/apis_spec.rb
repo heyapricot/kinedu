@@ -36,16 +36,24 @@ RSpec.describe "Apis", type: :request do
   end
 
   describe "GET /api/babies/:id/activity_logs" do
+    activity_number = 4
 
-    let(:baby){FactoryBot.create(:baby)}
+    let!(:baby){FactoryBot.create(:baby)}
+    let!(:activity){FactoryBot.create(:activity)}
+    let!(:assistant){FactoryBot.create(:assistant)}
+    let!(:activity_logs){FactoryBot.create_list(:activity_log, activity_number, baby: baby, activity: activity, assistant: assistant)}
+
+    before { get api_baby_activity_logs_path(baby.id)}
 
     it "returns status code 200" do
-      get api_baby_activity_logs_path(baby.id)
       expect(response).to have_http_status(200)
     end
 
-    xit "returns a list of activity_logs with id, baby_id, assistant_id, start_date, stop_date, terminated?" do
-
+    it "returns a list of activity_logs with id, baby_id, assistant_id, start_date, stop_date, terminated?" do
+      result = baby.activity_logs.select(:id, :start_time, :stop_time).map{|a| a.as_json}
+      expect(json).not_to be_empty
+      expect(json.size).to eq(activity_number)
+      expect(json).to match_array(result)
     end
 
   end
