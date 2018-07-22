@@ -19,13 +19,19 @@ RSpec.describe "Apis", type: :request do
   end
 
   describe "GET /api/babies" do
+    baby_number = 4
+    let!(:babies){FactoryBot.create_list(:baby,baby_number)}
+    before{ get api_babies_path }
+
     it "returns status code 200" do
-      get api_babies_path
       expect(response).to have_http_status(200)
     end
 
-    xit "returns a list of babies with name, age in months, parents name and contact info" do
-
+    it "returns a list of babies with name, parents name and contact info" do
+      result = Baby.select(:id, :name, :mother_name, :father_name, :address, :phone).map{|a| a.as_json}
+      expect(json).not_to be_empty
+      expect(json.size).to eq(baby_number)
+      expect(json).to match_array(result)
     end
   end
 
