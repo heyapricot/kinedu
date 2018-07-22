@@ -11,8 +11,10 @@ RSpec.describe "Apis", type: :request do
     end
 
     it "returns a list of activities with id, name and description" do
+      result = Activity.select(:id, :name, :description).map{|a| a.as_json}
       expect(json).not_to be_empty
       expect(json.size).to eq(activity_number)
+      expect(json).to match_array(result)
     end
   end
 
