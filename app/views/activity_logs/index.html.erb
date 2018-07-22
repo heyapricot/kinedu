@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Kinedu</title>
+    <%= csrf_meta_tags %>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col text-center">
+          <h1 class="top-title bold">Log de Actividades</h1>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-8">
+          <table class="table table-sm table-hover table-bordered table-dark">
+            <thead>
+            <tr>
+              <th scope="col">Bebé</th>
+              <th scope="col">Asistente</th>
+              <th scope="col">Actividad</th>
+              <th scope="col">Inicio</th>
+              <th scope="col">Estatus</th>
+              <th scope="col">Duración</th>
+            </tr>
+            </thead>
+            <tbody>
+            <%= render partial: "table_row", collection: @activity_logs, as: :log %>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
