@@ -60,15 +60,17 @@ RSpec.describe "Apis", type: :request do
 
   describe "POST /api/activity_logs" do
 
+    let(:attributes){{activity_id: '10', baby_id: '1', assistant_id: '1', start_time: DateTime.now.to_s, stop_time: (DateTime.now + 1).to_s }}
+
     context "when the request is valid" do
 
-      before { post api_activity_logs_path }
+      before { post api_activity_logs_path, params: attributes }
 
-      xit "creates an activity log" do
-
+      it "creates an activity log" do
+        expect(json['activity_id']).to eq 10
       end
 
-      pending "returns status code 201" do
+      it "returns status code 201" do
         expect(response).to have_http_status(201)
       end
     end
