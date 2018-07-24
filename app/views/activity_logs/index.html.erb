@@ -22,14 +22,11 @@
               <%= select_tag(:status, options_for_select([["En Progreso","En Progreso"],["Terminada", ""]]), prompt: "Seleccionar Estatus", class: "custom-select") %>
               <%= submit_tag("Filtrar", class: "btn btn-primary") %>
           <% end %>
-
-
-
         </div>
       </div>
       <div class="row justify-content-center">
         <div class="col-8">
-          <table class="table table-sm table-hover table-bordered table-dark">
+          <table class="table table-sm table-hover table-bordered table-dark" id="logs">
             <thead>
             <tr>
               <th scope="col">Bebé</th>
