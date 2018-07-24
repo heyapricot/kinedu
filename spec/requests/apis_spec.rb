@@ -60,14 +60,18 @@ RSpec.describe "Apis", type: :request do
 
   describe "POST /api/activity_logs" do
 
-    let(:attributes){{activity_id: '10', baby_id: '1', assistant_id: '1', start_time: DateTime.now.to_s, stop_time: (DateTime.now + 1).to_s }}
+    let!(:baby){FactoryBot.create(:baby)}
+    let!(:activity){FactoryBot.create(:activity)}
+    let!(:assistant){FactoryBot.create(:assistant)}
+    let(:attributes){{activity_id: activity.id, baby_id: baby.id, assistant_id: assistant.id, start_time: DateTime.now.to_s, stop_time: (DateTime.now + 1).to_s }}
 
     context "when the request is valid" do
 
-      before { post api_activity_logs_path, params: attributes }
+      before { post api_activity_logs_path(attributes) }
 
       it "creates an activity log" do
-        expect(json['activity_id']).to eq 10
+        expect(json['activity_id']).to eq activity.id
+        expect(ActivityLog.first.activity_id).to eq activity.id
       end
 
       it "returns status code 201" do
@@ -76,15 +80,13 @@ RSpec.describe "Apis", type: :request do
     end
 
     context "when the request is invalid" do
-      pending "returns status code 422" do
+      before { post api_activity_logs_path }
+
+      it "return status code 422" do
         expect(response).to have_http_status(422)
       end
 
-      pending "returns a validation failure message" do
-        expect(response.body).to match(/Validation failed: Created by can't be blank/)
-      end
     end
-
   end
 
   describe "PUT api/activity_logs/:id" do

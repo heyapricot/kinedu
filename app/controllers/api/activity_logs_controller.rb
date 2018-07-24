@@ -6,7 +6,7 @@ class Api::ActivityLogsController < ApplicationController
   end
 
   def create
-    @activity_log = ActivityLog.create(activity_log_params)
+    @activity_log = ActivityLog.create!(activity_log_params)
     json_response(@activity_log, :created)
   end
 
