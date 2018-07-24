@@ -4,5 +4,5 @@
   <td><%= log.activity.name %></td>
   <td><%= log.start_time.in_time_zone("Mexico City").strftime('%Y-%m-%d %H:%M') %></td>
   <td><%= log.status %></td>
-  <td><%="#{log.duration.to_i} min" %></td>
+  <td><%= log.duration.nil? || log.duration <= 1 ? "*" : "#{log.duration.to_i} min" %></td>
 </tr>

@@ -3,9 +3,8 @@ class ActivityLog < ApplicationRecord
   belongs_to :assistant
   belongs_to :activity
 
-  def duration
-    (stop_time - start_time)/60 unless stop_time.nil?
-  end
+  scope :finished, ->{where("stop_time IS NOT NULL")}
+  scope :in_progress, ->{where("stop_time IS NULL")}
 
   def status
     stop_time.nil? ? "En Progreso" : "Terminada"

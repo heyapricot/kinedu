@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :assistant do
-    name "MyString"
+    name {Faker::DragonBall.character}
     group "MyString"
     address "MyString"
     phone "MyString"
