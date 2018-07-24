@@ -19,7 +19,7 @@
           <%= form_tag activity_logs_path(:baby_id, :assistant_id), method: :get, class: "form-inline justify-content-around mb-3" do %>
               <%= select_tag(:baby_id, options_for_select(ActivityLog.joins(:baby).distinct.pluck(:name, :baby_id).sort), prompt: "Seleccionar Bebé", class: "custom-select") %>
               <%= select_tag(:assistant_id, options_for_select(ActivityLog.joins(:assistant).distinct.pluck(:name, :assistant_id).sort), prompt: "Seleccionar Asistente", class: "custom-select") %>
-              <%= select_tag(:status, options_for_select([["En Progreso","En Progreso"],["Terminada", ""]]), prompt: "Seleccionar Estatus", class: "custom-select") %>
+              <%= select_tag(:status, options_for_select([["En Progreso","En Progreso"],["Terminada", "Terminada"]]), prompt: "Seleccionar Estatus", class: "custom-select") %>
               <%= submit_tag("Filtrar", class: "btn btn-primary") %>
           <% end %>
         </div>
