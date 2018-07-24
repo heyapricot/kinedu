@@ -92,13 +92,27 @@ RSpec.describe "Apis", type: :request do
   describe "PUT api/activity_logs/:id" do
     context "when the record exists" do
 
-      before { put api_activity_log_path }
+      time = DateTime.current
+      comment = "Will this work?"
 
-      xit "updates the record" do
+      let!(:baby){FactoryBot.create(:baby)}
+      let!(:activity){FactoryBot.create(:activity)}
+      let!(:assistant){FactoryBot.create(:assistant)}
+      let!(:log){FactoryBot.create(:activity_log, baby: baby, activity: activity, assistant: assistant, start_time: DateTime.current - rand(1..23).hours, stop_time: nil )}
+      let(:attributes){{stop_time: time, comments: comment }}
 
+      before { put api_activity_log_path(log), params: attributes }
+
+      it "updates the record" do
+        al = ActivityLog.find(log.id)
+
+        expect(response.body).to be_empty
+        expect(al.stop_time.to_i).to eq time.to_i
+        expect(al.comments).to eq comment
+        expect(al.duration).to eq (al.stop_time - al.start_time).minutes
       end
 
-      pending "returns status code 204" do
+      it "returns status code 204" do
         expect(response).to have_http_status(204)
       end
     end

@@ -11,10 +11,12 @@ class Api::ActivityLogsController < ApplicationController
   end
 
   def update
-
+    @activity_log = ActivityLog.find(params[:id])
+    @activity_log.update!(activity_log_params)
+    head :no_content
   end
 
   def activity_log_params
-    params.permit(:activity_id, :baby_id, :assistant_id, :start_time, :stop_time)
+    params.permit(:activity_id, :baby_id, :assistant_id, :start_time, :stop_time, :comments)
   end
 end
