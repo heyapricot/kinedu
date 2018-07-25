@@ -5,10 +5,11 @@ class Api::ActivityLogsController < ApplicationController
       @logs = ActivityLog.all
     else
       baby = Baby.find(id)
-      @logs = baby.activity_logs.select(:id, :baby_id, :start_time).as_json
+      @logs = baby.activity_logs.select(:id, :baby_id).as_json
       baby.activity_logs.each_with_index do |al,idx|
         @logs[idx]["assistant"] = al.assistant.name
-        @logs[idx]["stop_time"] = al.stop_time if al.status == "Terminada"
+        @logs[idx]["start_time"] = al.start_time.iso8601
+        @logs[idx]["stop_time"] = al.stop_time.iso8601 if al.status == "Terminada"
       end
     end
     json_response(@logs)
