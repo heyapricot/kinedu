@@ -28,7 +28,11 @@ RSpec.describe "Apis", type: :request do
     end
 
     it "returns a list of babies with name, parents name and contact info" do
-      result = Baby.select(:id, :name, :mother_name, :father_name, :address, :phone).map{|a| a.as_json}
+      result = Baby.select(:id, :name, :mother_name, :father_name, :address, :phone)
+      result = result.as_json
+      Baby.all.each_with_index do |b,idx|
+        result[idx]["age_in_months"] = b.age_in_months
+      end
       expect(json).not_to be_empty
       expect(json.size).to eq(baby_number)
       expect(json).to match_array(result)
