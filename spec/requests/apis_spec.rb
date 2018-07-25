@@ -45,7 +45,9 @@ RSpec.describe "Apis", type: :request do
     let!(:baby){FactoryBot.create(:baby)}
     let!(:activity){FactoryBot.create(:activity)}
     let!(:assistant){FactoryBot.create(:assistant)}
-    let!(:activity_logs){FactoryBot.create_list(:activity_log, activity_number, baby: baby, activity: activity, assistant: assistant)}
+    let!(:activity_logs) do
+      FactoryBot.create_list(:activity_log, activity_number, baby: baby, activity: activity, assistant: assistant)
+    end
 
     before { get api_baby_activity_logs_path(baby.id)}
 
@@ -54,7 +56,11 @@ RSpec.describe "Apis", type: :request do
     end
 
     it "returns a list of activity_logs with id, baby_id, assistant_id, start_date, stop_date, terminated?" do
-      result = baby.activity_logs.select(:id, :start_time, :stop_time).map{|a| a.as_json}
+      result = baby.activity_logs.select(:id, :baby_id, :start_time).as_json
+      baby.activity_logs.each_with_index do |al,idx|
+        result[idx]["assistant"] = al.assistant.name
+        result[idx]["stop_time"] = al.stop_time if al.status == "Terminada"
+      end
       expect(json).not_to be_empty
       expect(json.size).to eq(activity_number)
       expect(json).to match_array(result)

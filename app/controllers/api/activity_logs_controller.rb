@@ -1,7 +1,16 @@
 class Api::ActivityLogsController < ApplicationController
   def index
     id = params[:baby_id]
-    id.nil? ? @logs = ActivityLog.all : @logs = Baby.find(id).activity_logs.select(:id, :start_time, :stop_time)
+    if id.nil?
+      @logs = ActivityLog.all
+    else
+      baby = Baby.find(id)
+      @logs = baby.activity_logs.select(:id, :baby_id, :start_time).as_json
+      baby.activity_logs.each_with_index do |al,idx|
+        @logs[idx]["assistant"] = al.assistant.name
+        @logs[idx]["stop_time"] = al.stop_time if al.status == "Terminada"
+      end
+    end
     json_response(@logs)
   end
 
