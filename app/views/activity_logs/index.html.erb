@@ -38,7 +38,7 @@
             </tr>
             </thead>
             <tbody>
-            <%= render partial: "table_row", collection: @activity_logs, as: :log %>
+            <%= render partial: "table_row", collection: @activity_logs.order(start_time: :desc), as: :log %>
             </tbody>
           </table>
         </div>
